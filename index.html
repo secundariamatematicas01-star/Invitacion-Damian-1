@@ -5,62 +5,175 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invitación Cumpleaños Damián</title>
     <style>
-        /* Centramos el contenido en la página (opcional) */
+        /* Fondo ambientado tipo selva/jurásico */
         body {
             display: flex;
             justify-content: center;
-            background-color: #f0f0f0; /* Color de fondo de la página web */
+            align-items: center;
+            min-height: 100vh;
             margin: 0;
             padding: 20px;
+            background: radial-gradient(circle, #4a7c36 0%, #1e3b14 100%);
+            background-image: url('https://www.transparenttextures.com/patterns/wood-pattern.png');
+            font-family: sans-serif;
+            overflow: hidden; /* Evita que salgan barras de desplazamiento por el regalo */
         }
 
-        /* Contenedor principal: Esto es CLAVE. Debe tener posición relativa. */
         .invitacion-container {
             position: relative;
             display: inline-block;
-            max-width: 500px; /* Tamaño máximo para que se vea bien en celular y PC */
+            max-width: 500px; 
             width: 100%;
+            z-index: 1; /* Mantiene la invitación por encima del fondo */
         }
 
-        /* Aseguramos que la imagen no se desborde */
         .invitacion-container img {
             width: 100%;
             height: auto;
             display: block;
-            border-radius: 15px; /* Un ligero borde redondeado para que se vea bonita */
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            border-radius: 15px; 
+            box-shadow: 0 15px 25px rgba(0,0,0,0.5); 
         }
 
-        /* El botón transparente (área clickeable) */
+        /* El botón transparente de Google Maps */
         .boton-ubicacion {
             position: absolute;
-            /* Estos porcentajes ubican el botón sobre el icono rojo */
-            top: 86.5%;     /* Distancia desde arriba */
-            left: 11%;      /* Distancia desde la izquierda */
-            width: 15%;     /* Ancho del botón */
-            height: 6%;     /* Alto del botón */
-            
-            background-color: transparent; /* Lo hace invisible */
-            cursor: pointer; /* Cambia la flecha por la manita al pasar el mouse */
+            top: 86.5%;     
+            left: 11%;      
+            width: 15%;     
+            height: 6%;     
+            background-color: transparent; 
+            cursor: pointer; 
             z-index: 10;
-            
-            /* TRUCO PARA AJUSTAR: Si necesitas mover el botón, 
-               borra los símbolos /* y */ de la línea de abajo para ver el botón rojo. 
-               Ajusta el 'top' y 'left' hasta que cubra el icono, y luego vuelve a ocultarlo. */
-            
-            /* border: 2px solid red; background-color: rgba(255,0,0,0.4); */
+        }
+
+        /* Estilos para el botón de música flotante */
+        .btn-musica {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            border: 2px solid #a3c971;
+            color: #fff;
+            padding: 12px 18px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            z-index: 100;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .btn-musica:hover {
+            background-color: rgba(163, 201, 113, 0.8);
+            transform: scale(1.05);
+        }
+
+        /* Contenedor del sticker que se moverá por la pantalla */
+        #contenedor-regalo {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 50;
+            pointer-events: none; /* ¡Clave! Evita que el regalo bloquee los clics */
+            user-select: none;
+        }
+
+        /* El diseño del sticker con una animación para que tambalee un poco */
+        #sticker-regalo {
+            font-size: 60px; /* Tamaño del regalo */
+            animation: tambalear 2s infinite ease-in-out;
+            /* Le añadimos un filtro de sombra para que resalte más */
+            filter: drop-shadow(0px 5px 5px rgba(0,0,0,0.4));
+        }
+
+        /* Animación para que el regalo se mueva un poco sobre su propio eje */
+        @keyframes tambalear {
+            0%, 100% { transform: rotate(-10deg); }
+            50% { transform: rotate(10deg); }
         }
     </style>
 </head>
 <body>
 
+    <!-- Elemento de audio con un enlace de ejemplo (reemplaza con tu link real) -->
+    <audio id="audioFondo" loop>
+        <source src="sonido-dinosaurio.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Botón para controlar el sonido -->
+    <button class="btn-musica" id="btnAudio" onclick="toggleAudio()">
+        🎵 Encender Sonido
+    </button>
+
+    <!-- El sticker del regalo flotante -->
+    <div id="contenedor-regalo">
+        <div id="sticker-regalo">🎁</div>
+    </div>
+
+    <!-- Contenedor principal de la invitación -->
     <div class="invitacion-container">
-        <!-- Referencia exacta a tu imagen -->
         <img src="Gemini_Generated_Image_ebn0xsebn0xsebn0.jpg" alt="Invitación Damián 2 Años">
-        
-        <!-- Enlace a Google Maps buscando Salon SG en Ramos Arizpe -->
         <a href="https://www.google.com/maps/place/Salon+SG/@25.5312487,-100.9378834,17z/data=!3m1!4b1!4m6!3m5!1s0x8688130065b20a79:0x3b0eb8757d6aa223!8m2!3d25.5312487!4d-100.9378834!16s%2Fg%2F11xt68fttb!18m1!1e1?entry=ttu&g_ep=EgoyMDI2MDkxNS4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="boton-ubicacion" title="Abrir ubicación en Google Maps"></a>
     </div>
 
+    <script>
+        // --- 1. Lógica para reproducir/pausar el sonido ---
+        var audio = document.getElementById("audioFondo");
+        var btn = document.getElementById("btnAudio");
+
+        function toggleAudio() {
+            if (audio.paused) {
+                audio.play();
+                btn.innerHTML = "🔊 Apagar Sonido";
+                btn.style.backgroundColor = "rgba(163, 201, 113, 0.8)";
+            } else {
+                audio.pause();
+                btn.innerHTML = "🎵 Encender Sonido";
+                btn.style.backgroundColor = "rgba(255, 255, 255, 0.2)";
+            }
+        }
+
+        // --- 2. Lógica para mover el regalo aleatoriamente ---
+        const contenedorRegalo = document.getElementById('contenedor-regalo');
+        const tamanoRegalo = 70; // Tamaño aproximado en píxeles para calcular los rebotes
+
+        // Posición inicial aleatoria
+        let posX = Math.random() * (window.innerWidth - tamanoRegalo);
+        let posY = Math.random() * (window.innerHeight - tamanoRegalo);
+        
+        // Velocidad de movimiento (puedes cambiar estos números para que vaya más rápido o lento)
+        let velocidadX = 1.5; 
+        let velocidadY = 1.5;
+
+        // Dirección aleatoria al iniciar
+        if (Math.random() > 0.5) velocidadX = -velocidadX;
+        if (Math.random() > 0.5) velocidadY = -velocidadY;
+
+        function animarRegalo() {
+            // Actualizar posiciones
+            posX += velocidadX;
+            posY += velocidadY;
+
+            // Detectar choque con los bordes de la pantalla (Derecha e Izquierda)
+            if (posX + tamanoRegalo >= window.innerWidth || posX <= 0) {
+                velocidadX = -velocidadX; // Invertir dirección
+            }
+            // Detectar choque con los bordes de la pantalla (Abajo y Arriba)
+            if (posY + tamanoRegalo >= window.innerHeight || posY <= 0) {
+                velocidadY = -velocidadY; // Invertir dirección
+            }
+
+            // Aplicar la nueva posición al contenedor
+            contenedorRegalo.style.transform = `translate(${posX}px, ${posY}px)`;
+
+            // Volver a llamar a la función para que la animación sea continua
+            requestAnimationFrame(animarRegalo);
+        }
+
+        // Iniciar la animación del regalo
+        animarRegalo();
+    </script>
 </body>
 </html>
