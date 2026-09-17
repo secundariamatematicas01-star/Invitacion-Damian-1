@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invitación Cumpleaños Damián</title>
+    <style>
+        /* Centramos el contenido en la página (opcional) */
+        body {
+            display: flex;
+            justify-content: center;
+            background-color: #f0f0f0; /* Color de fondo de la página web */
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* Contenedor principal: Esto es CLAVE. Debe tener posición relativa. */
+        .invitacion-container {
+            position: relative;
+            display: inline-block;
+            max-width: 500px; /* Tamaño máximo para que se vea bien en celular y PC */
+            width: 100%;
+        }
+
+        /* Aseguramos que la imagen no se desborde */
+        .invitacion-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 15px; /* Un ligero borde redondeado para que se vea bonita */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        /* El botón transparente (área clickeable) */
+        .boton-ubicacion {
+            position: absolute;
+            /* Estos porcentajes ubican el botón sobre el icono rojo */
+            top: 86.5%;     /* Distancia desde arriba */
+            left: 11%;      /* Distancia desde la izquierda */
+            width: 15%;     /* Ancho del botón */
+            height: 6%;     /* Alto del botón */
+            
+            background-color: transparent; /* Lo hace invisible */
+            cursor: pointer; /* Cambia la flecha por la manita al pasar el mouse */
+            z-index: 10;
+            
+            /* TRUCO PARA AJUSTAR: Si necesitas mover el botón, 
+               borra los símbolos /* y */ de la línea de abajo para ver el botón rojo. 
+               Ajusta el 'top' y 'left' hasta que cubra el icono, y luego vuelve a ocultarlo. */
+            
+            /* border: 2px solid red; background-color: rgba(255,0,0,0.4); */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="invitacion-container">
+        <!-- Referencia exacta a tu imagen -->
+        <img src="Gemini_Generated_Image_ebn0xsebn0xsebn0.jpg" alt="Invitación Damián 2 Años">
+        
+        <!-- Enlace a Google Maps buscando Salon SG en Ramos Arizpe -->
+        <a href="https://www.google.com/maps/place/Salon+SG/@25.5312487,-100.9378834,17z/data=!3m1!4b1!4m6!3m5!1s0x8688130065b20a79:0x3b0eb8757d6aa223!8m2!3d25.5312487!4d-100.9378834!16s%2Fg%2F11xt68fttb!18m1!1e1?entry=ttu&g_ep=EgoyMDI2MDkxNS4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="boton-ubicacion" title="Abrir ubicación en Google Maps"></a>
+    </div>
+
+</body>
+</html>
