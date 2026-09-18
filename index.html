@@ -47,6 +47,22 @@
             z-index: 10;
         }
 
+        /* NUEVO: Botón transparente de WhatsApp */
+        .boton-confirmar {
+            position: absolute;
+            /* Estos porcentajes los calculé aproximadamente para que caigan sobre el letrero. 
+               Si necesitas moverlo, activa el borde azul borrando los /* de abajo */
+            top: 20%;       
+            left: 15%;      
+            width: 70%;     
+            height: 7%;     
+            background-color: transparent; 
+            cursor: pointer; 
+            z-index: 10;
+            
+            /* border: 2px solid blue; background-color: rgba(0,0,255,0.4); */
+        }
+
         /* Botón de música flotante circular */
         .btn-musica {
             position: fixed;
@@ -56,7 +72,6 @@
             backdrop-filter: blur(5px);
             border: 2px solid #a3c971;
             color: #fff;
-            /* Medidas para hacerlo un círculo perfecto */
             width: 55px;
             height: 55px;
             border-radius: 50%;
@@ -64,7 +79,7 @@
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            font-size: 24px; /* Tamaño del icono */
+            font-size: 24px;
             z-index: 100;
             transition: all 0.3s ease;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
@@ -76,7 +91,7 @@
             transform: scale(1.1);
         }
 
-        /* Clase general para los contenedores de los stickers */
+        /* Contenedores de los stickers */
         .contenedor-sticker {
             position: fixed; 
             top: 0;
@@ -86,13 +101,11 @@
             user-select: none;
         }
 
-        /* Diseño de los iconos */
         .icono-sticker {
-            font-size: 50px; /* Tamaño un poco más ajustado para que quepan dos bien */
+            font-size: 50px; 
             filter: drop-shadow(0px 5px 5px rgba(0,0,0,0.4));
         }
 
-        /* Animaciones individuales para que no se muevan idénticos */
         #icono-regalo { animation: tambalear 2s infinite ease-in-out; }
         #icono-sobre { animation: tambalear 2.5s infinite ease-in-out reverse; }
 
@@ -104,12 +117,12 @@
 </head>
 <body>
 
-    <!-- Audio (Asegúrate de tener sonido-dinosaurios.mp3 en tu carpeta) -->
+    <!-- Audio -->
     <audio id="audioFondo" loop>
-        <source src="sonido-dinosaurio.mp3" type="audio/mpeg">
+        <source src="sonido-dinosaurios.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- Botón circular para controlar el sonido (Inicia con icono de silencio) -->
+    <!-- Botón circular para controlar el sonido -->
     <button class="btn-musica" id="btnAudio" onclick="toggleAudio()">
         🔇
     </button>
@@ -118,48 +131,51 @@
     <div id="contenedor-regalo" class="contenedor-sticker">
         <div id="icono-regalo" class="icono-sticker">🎁</div>
     </div>
-    
     <div id="contenedor-sobre" class="contenedor-sticker">
         <div id="icono-sobre" class="icono-sticker">💌</div>
     </div>
 
     <!-- Contenedor principal de la invitación -->
     <div class="invitacion-container">
-        <img src="Gemini_Generated_Image_ebn0xsebn0xsebn0.jpg" alt="Invitación Damián 2 Años">
+        <!-- Tu NUEVA imagen -->
+        <img src="Gemini_Generated_Image_7h58s97h58s97h58.jpg" alt="Invitación Damián 2 Años">
+        
+        <!-- Enlace a Google Maps -->
         <a href="https://www.google.com/maps/place/Salon+SG/@25.5312487,-100.9378834,17z/data=!3m1!4b1!4m6!3m5!1s0x8688130065b20a79:0x3b0eb8757d6aa223!8m2!3d25.5312487!4d-100.9378834!16s%2Fg%2F11xt68fttb!18m1!1e1?entry=ttu&g_ep=EgoyMDI2MDkxNS4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="boton-ubicacion" title="Abrir ubicación en Google Maps"></a>
+
+        <!-- NUEVO: Enlace a WhatsApp (RECUERDA CAMBIAR EL NÚMERO) -->
+        <!-- Cambia NUMERO_AQUI por tu teléfono, por ejemplo: 521234567890 (código de país sin el + seguido de tu número) -->
+        <a href="https://wa.me/528442958983?text=Hola,%20confirmo%20la%20asistencia%20a%20la%20fiesta%20de%20Dami%C3%A1n." target="_blank" class="boton-confirmar" title="Confirmar asistencia por WhatsApp"></a>
     </div>
 
     <script>
-        // --- 1. Lógica del sonido con iconos ---
+        // --- Lógica del sonido ---
         var audio = document.getElementById("audioFondo");
         var btn = document.getElementById("btnAudio");
 
         function toggleAudio() {
             if (audio.paused) {
                 audio.play();
-                btn.innerHTML = "🔊"; // Cambia al icono de sonido encendido
+                btn.innerHTML = "🔊"; 
                 btn.style.backgroundColor = "rgba(163, 201, 113, 0.8)";
             } else {
                 audio.pause();
-                btn.innerHTML = "🔇"; // Cambia al icono de silencio
+                btn.innerHTML = "🔇"; 
                 btn.style.backgroundColor = "rgba(255, 255, 255, 0.2)";
             }
         }
 
-        // --- 2. Lógica optimizada para animar múltiples stickers ---
+        // --- Lógica de los stickers ---
         function iniciarSticker(idElemento) {
             const contenedor = document.getElementById(idElemento);
-            const tamano = 60; // Tamaño aproximado del sticker
+            const tamano = 60; 
 
-            // Posición inicial aleatoria
             let posX = Math.random() * (window.innerWidth - tamano);
             let posY = Math.random() * (window.innerHeight - tamano);
             
-            // Velocidades aleatorias para que cada sticker vaya a un ritmo distinto
             let velocidadX = (Math.random() * 1.5 + 0.8);
             let velocidadY = (Math.random() * 1.5 + 0.8);
 
-            // Dirección aleatoria
             if (Math.random() > 0.5) velocidadX = -velocidadX;
             if (Math.random() > 0.5) velocidadY = -velocidadY;
 
@@ -167,7 +183,6 @@
                 posX += velocidadX;
                 posY += velocidadY;
 
-                // Detección de rebote en los bordes
                 if (posX + tamano >= window.innerWidth || posX <= 0) {
                     velocidadX = -velocidadX; 
                 }
@@ -182,7 +197,6 @@
             animar();
         }
 
-        // Encendemos la animación para ambos stickers
         iniciarSticker('contenedor-regalo');
         iniciarSticker('contenedor-sobre');
     </script>
