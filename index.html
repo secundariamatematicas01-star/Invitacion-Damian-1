@@ -5,18 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invitación Cumpleaños Damián</title>
     <style>
-        /* Fondo ambientado tipo selva/jurásico */
+        /* Fondo ambientado */
         body {
             display: flex;
             justify-content: center;
-            align-items: center;
             min-height: 100vh;
             margin: 0;
             padding: 20px;
             background: radial-gradient(circle, #4a7c36 0%, #1e3b14 100%);
             background-image: url('https://www.transparenttextures.com/patterns/wood-pattern.png');
             font-family: sans-serif;
-            overflow: hidden; /* Evita que salgan barras de desplazamiento por el regalo */
+            overflow-x: hidden; 
         }
 
         .invitacion-container {
@@ -24,7 +23,8 @@
             display: inline-block;
             max-width: 500px; 
             width: 100%;
-            z-index: 1; /* Mantiene la invitación por encima del fondo */
+            z-index: 1; 
+            margin-bottom: 80px; 
         }
 
         .invitacion-container img {
@@ -35,7 +35,7 @@
             box-shadow: 0 15px 25px rgba(0,0,0,0.5); 
         }
 
-        /* El botón transparente de Google Maps */
+        /* Botón transparente de Google Maps */
         .boton-ubicacion {
             position: absolute;
             top: 86.5%;     
@@ -47,7 +47,7 @@
             z-index: 10;
         }
 
-        /* Estilos para el botón de música flotante */
+        /* Botón de música flotante circular */
         .btn-musica {
             position: fixed;
             bottom: 20px;
@@ -56,60 +56,71 @@
             backdrop-filter: blur(5px);
             border: 2px solid #a3c971;
             color: #fff;
-            padding: 12px 18px;
-            border-radius: 50px;
+            /* Medidas para hacerlo un círculo perfecto */
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 24px; /* Tamaño del icono */
             z-index: 100;
             transition: all 0.3s ease;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            padding: 0;
         }
 
         .btn-musica:hover {
             background-color: rgba(163, 201, 113, 0.8);
-            transform: scale(1.05);
+            transform: scale(1.1);
         }
 
-        /* Contenedor del sticker que se moverá por la pantalla */
-        #contenedor-regalo {
-            position: fixed;
+        /* Clase general para los contenedores de los stickers */
+        .contenedor-sticker {
+            position: fixed; 
             top: 0;
             left: 0;
             z-index: 50;
-            pointer-events: none; /* ¡Clave! Evita que el regalo bloquee los clics */
+            pointer-events: none; 
             user-select: none;
         }
 
-        /* El diseño del sticker con una animación para que tambalee un poco */
-        #sticker-regalo {
-            font-size: 60px; /* Tamaño del regalo */
-            animation: tambalear 2s infinite ease-in-out;
-            /* Le añadimos un filtro de sombra para que resalte más */
+        /* Diseño de los iconos */
+        .icono-sticker {
+            font-size: 50px; /* Tamaño un poco más ajustado para que quepan dos bien */
             filter: drop-shadow(0px 5px 5px rgba(0,0,0,0.4));
         }
 
-        /* Animación para que el regalo se mueva un poco sobre su propio eje */
+        /* Animaciones individuales para que no se muevan idénticos */
+        #icono-regalo { animation: tambalear 2s infinite ease-in-out; }
+        #icono-sobre { animation: tambalear 2.5s infinite ease-in-out reverse; }
+
         @keyframes tambalear {
-            0%, 100% { transform: rotate(-10deg); }
-            50% { transform: rotate(10deg); }
+            0%, 100% { transform: rotate(-12deg); }
+            50% { transform: rotate(12deg); }
         }
     </style>
 </head>
 <body>
 
-    <!-- Elemento de audio con un enlace de ejemplo (reemplaza con tu link real) -->
+    <!-- Audio (Asegúrate de tener sonido-dinosaurios.mp3 en tu carpeta) -->
     <audio id="audioFondo" loop>
-        <source src="sonido-dinosaurio.mp3" type="audio/mpeg">
+        <source src="sonido-dinosaurios.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- Botón para controlar el sonido -->
+    <!-- Botón circular para controlar el sonido (Inicia con icono de silencio) -->
     <button class="btn-musica" id="btnAudio" onclick="toggleAudio()">
-        🎵 Encender Sonido
+        🔇
     </button>
 
-    <!-- El sticker del regalo flotante -->
-    <div id="contenedor-regalo">
-        <div id="sticker-regalo">🎁</div>
+    <!-- Stickers flotantes -->
+    <div id="contenedor-regalo" class="contenedor-sticker">
+        <div id="icono-regalo" class="icono-sticker">🎁</div>
+    </div>
+    
+    <div id="contenedor-sobre" class="contenedor-sticker">
+        <div id="icono-sobre" class="icono-sticker">💌</div>
     </div>
 
     <!-- Contenedor principal de la invitación -->
@@ -119,61 +130,61 @@
     </div>
 
     <script>
-        // --- 1. Lógica para reproducir/pausar el sonido ---
+        // --- 1. Lógica del sonido con iconos ---
         var audio = document.getElementById("audioFondo");
         var btn = document.getElementById("btnAudio");
 
         function toggleAudio() {
             if (audio.paused) {
                 audio.play();
-                btn.innerHTML = "🔊 Apagar Sonido";
+                btn.innerHTML = "🔊"; // Cambia al icono de sonido encendido
                 btn.style.backgroundColor = "rgba(163, 201, 113, 0.8)";
             } else {
                 audio.pause();
-                btn.innerHTML = "🎵 Encender Sonido";
+                btn.innerHTML = "🔇"; // Cambia al icono de silencio
                 btn.style.backgroundColor = "rgba(255, 255, 255, 0.2)";
             }
         }
 
-        // --- 2. Lógica para mover el regalo aleatoriamente ---
-        const contenedorRegalo = document.getElementById('contenedor-regalo');
-        const tamanoRegalo = 70; // Tamaño aproximado en píxeles para calcular los rebotes
+        // --- 2. Lógica optimizada para animar múltiples stickers ---
+        function iniciarSticker(idElemento) {
+            const contenedor = document.getElementById(idElemento);
+            const tamano = 60; // Tamaño aproximado del sticker
 
-        // Posición inicial aleatoria
-        let posX = Math.random() * (window.innerWidth - tamanoRegalo);
-        let posY = Math.random() * (window.innerHeight - tamanoRegalo);
-        
-        // Velocidad de movimiento (puedes cambiar estos números para que vaya más rápido o lento)
-        let velocidadX = 1.5; 
-        let velocidadY = 1.5;
+            // Posición inicial aleatoria
+            let posX = Math.random() * (window.innerWidth - tamano);
+            let posY = Math.random() * (window.innerHeight - tamano);
+            
+            // Velocidades aleatorias para que cada sticker vaya a un ritmo distinto
+            let velocidadX = (Math.random() * 1.5 + 0.8);
+            let velocidadY = (Math.random() * 1.5 + 0.8);
 
-        // Dirección aleatoria al iniciar
-        if (Math.random() > 0.5) velocidadX = -velocidadX;
-        if (Math.random() > 0.5) velocidadY = -velocidadY;
+            // Dirección aleatoria
+            if (Math.random() > 0.5) velocidadX = -velocidadX;
+            if (Math.random() > 0.5) velocidadY = -velocidadY;
 
-        function animarRegalo() {
-            // Actualizar posiciones
-            posX += velocidadX;
-            posY += velocidadY;
+            function animar() {
+                posX += velocidadX;
+                posY += velocidadY;
 
-            // Detectar choque con los bordes de la pantalla (Derecha e Izquierda)
-            if (posX + tamanoRegalo >= window.innerWidth || posX <= 0) {
-                velocidadX = -velocidadX; // Invertir dirección
+                // Detección de rebote en los bordes
+                if (posX + tamano >= window.innerWidth || posX <= 0) {
+                    velocidadX = -velocidadX; 
+                }
+                if (posY + tamano >= window.innerHeight || posY <= 0) {
+                    velocidadY = -velocidadY; 
+                }
+
+                contenedor.style.transform = `translate(${posX}px, ${posY}px)`;
+                requestAnimationFrame(animar);
             }
-            // Detectar choque con los bordes de la pantalla (Abajo y Arriba)
-            if (posY + tamanoRegalo >= window.innerHeight || posY <= 0) {
-                velocidadY = -velocidadY; // Invertir dirección
-            }
 
-            // Aplicar la nueva posición al contenedor
-            contenedorRegalo.style.transform = `translate(${posX}px, ${posY}px)`;
-
-            // Volver a llamar a la función para que la animación sea continua
-            requestAnimationFrame(animarRegalo);
+            animar();
         }
 
-        // Iniciar la animación del regalo
-        animarRegalo();
+        // Encendemos la animación para ambos stickers
+        iniciarSticker('contenedor-regalo');
+        iniciarSticker('contenedor-sobre');
     </script>
 </body>
 </html>
